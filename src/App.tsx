@@ -9,6 +9,7 @@ const App = () => {
 			<BrowserRouter>
 				<Routes>
 					<Route path="/" element={<R.Home />} />
+					<Route path="/loading" element={<R.Loading />} />
 				</Routes>
 			</BrowserRouter>
 		</RecoilRoot>
