@@ -1,7 +1,7 @@
 import React from 'react'
 import './style'
 import * as S from './style'
-import Header from 'components/Header'
+import { Header } from 'allFiles'
 
 const Home = () => {
 	return (
