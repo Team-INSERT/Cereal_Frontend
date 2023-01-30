@@ -1,4 +1,5 @@
 import React from 'react'
+import recommendChat from 'utils/recommendChat'
 import * as S from './style'
 
 const ChatBox = () => {
@@ -19,7 +20,18 @@ const ChatBox = () => {
 			<S.ChatBoxLine />
 			<S.ChatRecommendWrap>
 				<S.ChatBoxTitle>이런 질문을 해봐요!</S.ChatBoxTitle>
-				<img src="assets/test.png" width={260} />
+				<S.ChatBox color="#007aff">
+					<S.ChatText>{recommendChat[Math.trunc(Math.random() * 31)]}</S.ChatText>
+				</S.ChatBox>
+				<S.ChatBox color="#aaaaaa">
+					<S.ChatText>{recommendChat[Math.trunc(Math.random() * 31)]}</S.ChatText>
+				</S.ChatBox>
+				<S.ChatBox color="#007aff">
+					<S.ChatText>{recommendChat[Math.trunc(Math.random() * 31)]}</S.ChatText>
+				</S.ChatBox>
+				<S.ChatBox color="#aaaaaa">
+					<S.ChatText>{recommendChat[Math.trunc(Math.random() * 31)]}</S.ChatText>
+				</S.ChatBox>
 			</S.ChatRecommendWrap>
 		</S.ChatBoxWrap>
 	)
