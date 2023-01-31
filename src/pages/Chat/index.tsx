@@ -11,7 +11,9 @@ const Chat = () => {
 						<S.ChattingHeaderText>익명님과의 대화</S.ChattingHeaderText>
 					</S.ChattingHeader>
 					<S.ChattingBox></S.ChattingBox>
-					<S.ChattingSend></S.ChattingSend>
+					<S.ChattingSend>
+						<img src="" />
+					</S.ChattingSend>
 				</S.ChattingWrap>
 				<ChatBox />
 			</S.ChatBackboardWrap>
