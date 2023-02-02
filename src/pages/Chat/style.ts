@@ -56,6 +56,8 @@ export const ChattingSend = styled.textarea`
 	border: none;
 	outline: none;
 	font-size: 14px;
+	font-family: 'Open Sans', sans-serif;
+	font-weight: 500;
 	padding: 10px 18px 0 18px;
 `
 
@@ -64,7 +66,7 @@ export const ChattingSendButton = styled.button`
 	width: 60px;
 	height: 48px;
 	border: none;
-	background-color: #ccc;
+	background-color: ${(props) => props.color};
 	border-radius: 4px;
 	color: white;
 	font-weight: 600;
