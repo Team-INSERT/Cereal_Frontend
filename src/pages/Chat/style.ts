@@ -39,7 +39,7 @@ export const ChattingBox = styled.div`
 	overflow: scroll;
 `
 
-export const ChattingSendBox = styled.form`
+export const ChattingSendBox = styled.div`
 	margin-top: 10px;
 	width: 100%;
 	height: 14%;

@@ -3,7 +3,7 @@ import * as S from './style'
 import io from 'socket.io-client'
 
 const Loading = () => {
-	const socket = io('http://localhost:8000')
+	const socket = io('http://localhost:8081')
 
 	useEffect(() => {
 		socket.on('receive message', (message: { name: string; message: string }) => {

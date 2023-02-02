@@ -1,19 +1,27 @@
 import { ChatBox } from 'allFiles'
 import React, { useEffect, useState } from 'react'
 import * as S from './style'
+import io from 'socket.io-client'
 
 const Chat = () => {
+	const socket = io('http://localhost:8081')
 	const [message, setMessage] = useState('')
 	const [isEmpty, setIsEmpty] = useState(true)
 
 	useEffect(() => {
 		const objDiv = document.getElementById('chat') as HTMLElement
 		objDiv.scrollTop = objDiv.scrollHeight
+
 	}, [])
 
 	const onSubmitMessage = () => {
 		if (message.replace(/\n/gi, '').length === 0) return
-		console.log('submit')
+		const msgobj = { room: 1, name: 'sk', message: message }
+
+		socket.on('connect', () => {
+			console.log(socket.id)
+			socket.emit('message', msgobj)
+		})
 		setMessage('')
 	}
 
@@ -27,11 +35,12 @@ const Chat = () => {
 			<S.ChatBackboardWrap>
 				<S.ChattingWrap>
 					<S.ChattingHeader>
-						<S.ChattingProfileImage src="https://bssm.kro.kr/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fprofile_default.99e93808.png&w=128&q=75" />
+						<S.ChattingProfileImage
+							src='https://bssm.kro.kr/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fprofile_default.99e93808.png&w=128&q=75' />
 						<S.ChattingHeaderText>익명님과의 대화</S.ChattingHeaderText>
 					</S.ChattingHeader>
 					<S.ChattingLine />
-					<S.ChattingBox id="chat">
+					<S.ChattingBox id='chat'>
 						<S.ChatBox>
 							<S.MyChatDate>오후 2:48</S.MyChatDate>
 							<S.MyChat>TEST TEST</S.MyChat>
@@ -39,7 +48,8 @@ const Chat = () => {
 						<S.ChatBox>
 							<S.MyChatDate>오후 2:48</S.MyChatDate>
 							<S.MyChat>
-								TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST
+								TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST
+								TEST TEST TEST TEST TEST TEST
 							</S.MyChat>
 						</S.ChatBox>
 						<S.ChatBox>
