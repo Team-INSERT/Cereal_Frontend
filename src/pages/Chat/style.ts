@@ -78,6 +78,12 @@ export const ChattingHeaderText = styled.span`
 	margin: 2px 0 0 12px;
 `
 
+export const ChattingHeaderUserCounts = styled.span`
+	font-size: 14px;
+	font-weight: 600;
+	margin: 2px 20px 0 auto;
+`
+
 export const ChattingProfileImage = styled.img`
 	width: 30px;
 	height: 30px;

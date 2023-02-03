@@ -16,6 +16,7 @@ interface Chat {
 
 const Chat = () => {
 	const [chat, setChat] = useState([])
+	const [userCount, setUserCount] = useState(0)
 	const [message, setMessage] = useState('')
 	const [isEmpty, setIsEmpty] = useState(true)
 
@@ -28,6 +29,8 @@ const Chat = () => {
 				return [...chat, data] as never[]
 			})
 		})
+
+		socket.on('count', (data) => setUserCount(data))
 	}, [])
 
 	const onSubmitMessage = () => {
@@ -37,6 +40,7 @@ const Chat = () => {
 			message: message,
 			socketId: socket.id,
 		})
+
 		setMessage(message.replace(/\n/gi, ''))
 		setMessage('')
 	}
@@ -53,6 +57,7 @@ const Chat = () => {
 					<S.ChattingHeader>
 						<S.ChattingProfileImage src="https://bssm.kro.kr/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fprofile_default.99e93808.png&w=128&q=75" />
 						<S.ChattingHeaderText>익명님과의 대화</S.ChattingHeaderText>
+						<S.ChattingHeaderUserCounts>현재 접속자 수 : {userCount}명</S.ChattingHeaderUserCounts>
 					</S.ChattingHeader>
 					<S.ChattingLine />
 					<S.ChattingBox id="chat">
