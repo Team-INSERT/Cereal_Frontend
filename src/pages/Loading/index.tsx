@@ -2,8 +2,11 @@ import React, { useEffect } from 'react'
 import * as S from './style'
 import io from 'socket.io-client'
 
+const socket = io('http://localhost:8081', {
+	path: '/socket.io',
+})
+
 const Loading = () => {
-	const socket = io('http://localhost:8081')
 
 	useEffect(() => {
 		socket.on('receive message', (message: { name: string; message: string }) => {
