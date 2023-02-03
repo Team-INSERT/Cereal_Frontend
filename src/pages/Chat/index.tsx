@@ -2,26 +2,42 @@ import { ChatBox } from 'allFiles'
 import React, { useEffect, useState } from 'react'
 import * as S from './style'
 import io from 'socket.io-client'
+import dateParser from 'utils/dateParset'
+
+const socket = io('http://localhost:8081', {
+	path: '/socket.io',
+})
+
+interface Chat {
+	message: string
+	socketId: string
+	date: string
+}
 
 const Chat = () => {
-	const socket = io('http://localhost:8081')
+	const [chat, setChat] = useState([])
 	const [message, setMessage] = useState('')
 	const [isEmpty, setIsEmpty] = useState(true)
 
 	useEffect(() => {
 		const objDiv = document.getElementById('chat') as HTMLElement
 		objDiv.scrollTop = objDiv.scrollHeight
-
+		socket.emit('join', 1)
+		socket.on('message', function (data) {
+			setChat((chat) => {
+				return [...chat, data] as never[]
+			})
+		})
 	}, [])
 
 	const onSubmitMessage = () => {
 		if (message.replace(/\n/gi, '').length === 0) return
-		const msgobj = { room: 1, name: 'sk', message: message }
-
-		socket.on('connect', () => {
-			console.log(socket.id)
-			socket.emit('message', msgobj)
+		socket.emit('message', {
+			roomId: 1,
+			message: message,
+			socketId: socket.id,
 		})
+		setMessage(message.replace(/\n/gi, ''))
 		setMessage('')
 	}
 
@@ -35,31 +51,24 @@ const Chat = () => {
 			<S.ChatBackboardWrap>
 				<S.ChattingWrap>
 					<S.ChattingHeader>
-						<S.ChattingProfileImage
-							src='https://bssm.kro.kr/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fprofile_default.99e93808.png&w=128&q=75' />
+						<S.ChattingProfileImage src="https://bssm.kro.kr/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fprofile_default.99e93808.png&w=128&q=75" />
 						<S.ChattingHeaderText>익명님과의 대화</S.ChattingHeaderText>
 					</S.ChattingHeader>
 					<S.ChattingLine />
-					<S.ChattingBox id='chat'>
-						<S.ChatBox>
-							<S.MyChatDate>오후 2:48</S.MyChatDate>
-							<S.MyChat>TEST TEST</S.MyChat>
-						</S.ChatBox>
-						<S.ChatBox>
-							<S.MyChatDate>오후 2:48</S.MyChatDate>
-							<S.MyChat>
-								TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST
-								TEST TEST TEST TEST TEST TEST
-							</S.MyChat>
-						</S.ChatBox>
-						<S.ChatBox>
-							<S.YourChat>TEST TEST TEST TEST TEST TEST TEST </S.YourChat>
-							<S.YourChatDate>오후 2:49</S.YourChatDate>
-						</S.ChatBox>
-						{[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1].map((_, index) => (
+					<S.ChattingBox id="chat">
+						{chat.map((chat: Chat, index: number) => (
 							<S.ChatBox key={index}>
-								<S.YourChat>TEST</S.YourChat>
-								<S.YourChatDate>오후 2:49</S.YourChatDate>
+								{chat.socketId === socket.id ? (
+									<>
+										<S.MyChatDate>{dateParser(chat.date)}</S.MyChatDate>
+										<S.MyChat>{chat?.message}</S.MyChat>
+									</>
+								) : (
+									<>
+										<S.YourChat>{chat?.message}</S.YourChat>
+										<S.YourChatDate>{dateParser(chat.date)}</S.YourChatDate>
+									</>
+								)}
 							</S.ChatBox>
 						))}
 					</S.ChattingBox>
