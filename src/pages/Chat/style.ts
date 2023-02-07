@@ -40,7 +40,7 @@ export const ChattingBox = styled.div`
 `
 
 export const ChattingSendBox = styled.div`
-	margin-top: 10px; 
+	margin-top: 10px;
 	width: 100%;
 	height: 14%;
 	box-shadow: 0px -6px 5px -4px #ebebeb;
@@ -143,4 +143,11 @@ export const YourChatDate = styled.span`
 	margin: auto 4px 4px 0;
 	color: #ccc;
 	font-size: 12px;
+`
+
+export const LoadingText = styled.span`
+	margin: 10px 0 0 16px;
+	font-size: 12px;
+	font-weight: 700;
+	color: rgba(0, 0, 0, 0.4);
 `

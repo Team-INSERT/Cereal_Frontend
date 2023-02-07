@@ -9,7 +9,6 @@ const App = () => {
 			<BrowserRouter>
 				<Routes>
 					<Route path="/" element={<R.Home />} />
-					<Route path="/loading" element={<R.Loading />} />
 					<Route path="/chat" element={<R.Chat />} />
 				</Routes>
 			</BrowserRouter>
