@@ -19,11 +19,15 @@ const Chat = () => {
 	const [userCount, setUserCount] = useState(0)
 	const [message, setMessage] = useState('')
 	const [isEmpty, setIsEmpty] = useState(true)
-
+	const [roomId, setRoomId] = useState(0)
 	useEffect(() => {
 		const objDiv = document.getElementById('chat') as HTMLElement
 		objDiv.scrollTop = objDiv.scrollHeight
 		socket.emit('join', 1)
+		socket.on('join', (data) => {
+			setRoomId(data.roomId)
+
+		})
 		socket.on('message', function (data) {
 			setChat((chat) => {
 				return [...chat, data] as never[]
@@ -36,7 +40,7 @@ const Chat = () => {
 	const onSubmitMessage = () => {
 		if (message.replace(/\n/gi, '').length === 0) return
 		socket.emit('message', {
-			roomId: 1,
+			roomId,
 			message: message,
 			socketId: socket.id,
 		})

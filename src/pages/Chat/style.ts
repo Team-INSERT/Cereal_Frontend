@@ -40,7 +40,7 @@ export const ChattingBox = styled.div`
 `
 
 export const ChattingSendBox = styled.div`
-	margin-top: 10px;
+	margin-top: 10px; 
 	width: 100%;
 	height: 14%;
 	box-shadow: 0px -6px 5px -4px #ebebeb;
