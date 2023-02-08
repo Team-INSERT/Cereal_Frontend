@@ -5,9 +5,9 @@ import * as S from './style'
 const Home = () => {
 	return (
 		<S.HeaderWrap>
-			<S.HeaderNav>Home</S.HeaderNav>
-			<S.HeaderNav>Github</S.HeaderNav>
-			<S.HeaderNav>Instagram</S.HeaderNav>
+			<S.HeaderNav href="https://github.com/pigeon-head" target={'_blank'}>
+				Github
+			</S.HeaderNav>
 		</S.HeaderWrap>
 	)
 }

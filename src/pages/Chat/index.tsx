@@ -2,7 +2,7 @@ import { ChatBox } from 'allFiles'
 import React, { useEffect, useState } from 'react'
 import * as S from './style'
 import io from 'socket.io-client'
-import dateParser from 'utils/dateParset'
+import dateParser from 'utils/dateParser'
 
 const socket = io('http://localhost:8081', {
 	path: '/socket.io',
@@ -21,6 +21,9 @@ const Chat = () => {
 	const [isEmpty, setIsEmpty] = useState(true)
 	const [roomId, setRoomId] = useState(0)
 	const [disable, setDisable] = useState(true)
+	const [disconnect, setDisconnect] = useState(false)
+	const [exit, setExit] = useState(false)
+	const [clickExit, setClickExit] = useState(false)
 
 	useEffect(() => {
 		const objDiv = document.getElementById('chat') as HTMLElement
@@ -29,12 +32,31 @@ const Chat = () => {
 		socket.on('count', (data) => setUserCount(data))
 
 		socket.on('message', function (data) {
-			console.log('send')
 			setChat((chat) => {
 				return [...chat, data] as never[]
 			})
 		})
+		socket.on('logoff', (data) => {
+			console.log(data)
+			if (!exit) {
+				setDisable(true)
+				setDisconnect(true)
+				setExit(true)
+			}
+		})
+
+		socket.on('exit', (data) => {
+			console.log(data)
+			setExit(true)
+			setDisable(true)
+			setDisconnect(true)
+		})
 	}, [])
+
+	const onClickExitRoom = () => {
+		setClickExit(true)
+		socket.emit('exit', roomId)
+	}
 
 	socket.on('join', (data) => {
 		if (data.start) {
@@ -72,13 +94,35 @@ const Chat = () => {
 				<S.ChatBackboardWrap>
 					<S.ChattingWrap>
 						<S.ChattingHeader>
-							<S.ChattingProfileImage src="https://bssm.kro.kr/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fprofile_default.99e93808.png&w=128&q=75" />
-							<S.ChattingHeaderText>익명님과의 대화</S.ChattingHeaderText>
-							<S.ChattingHeaderUserCounts>현재 접속자 수 : {userCount}명</S.ChattingHeaderUserCounts>
+							{disable && !disconnect ? (
+								''
+							) : (
+								<>
+									<S.ChattingProfileImage src="https://bssm.kro.kr/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fprofile_default.99e93808.png&w=128&q=75" />
+									<S.ChattingHeaderText>익명님과의 대화</S.ChattingHeaderText>
+								</>
+							)}
+							<S.ChattingHeaderSubWrap>
+								<S.ChattingHeaderUserCounts>현재 접속자 수 : {userCount}명</S.ChattingHeaderUserCounts>
+								{disable && !disconnect ? (
+									''
+								) : (
+									<S.ChattingHeaderExitButton disabled={exit} onClick={onClickExitRoom} color={exit ? '#ccc' : '#007aff'}>
+										방 나가기
+									</S.ChattingHeaderExitButton>
+								)}
+							</S.ChattingHeaderSubWrap>
 						</S.ChattingHeader>
 						<S.ChattingLine />
 						<S.ChattingBox id="chat">
-							{disable ? <S.LoadingText>상대방을 기다리고 있어요...</S.LoadingText> : <S.LoadingText>연결 성공!</S.LoadingText>}
+							{disable && !disconnect ? (
+								<S.LoadingText>상대방을 기다리고 있어요...</S.LoadingText>
+							) : (
+								<S.LoadingText>
+									연결 성공!
+									<br />
+								</S.LoadingText>
+							)}
 							{chat.map((chat: Chat, index: number) => (
 								<S.ChatBox key={index}>
 									{chat.socketId === socket.id ? (
@@ -94,6 +138,25 @@ const Chat = () => {
 									)}
 								</S.ChatBox>
 							))}
+							{clickExit ? (
+								<S.LoadingText>
+									상대방과의 채팅을 종료했어요.
+									<br />
+									<S.LogoffButton onClick={() => window.location.reload()}>새 상대 연결하기</S.LogoffButton>
+								</S.LoadingText>
+							) : (
+								<>
+									{disconnect ? (
+										<S.LoadingText>
+											상대방이 채팅방을 나갔어요.
+											<br />
+											<S.LogoffButton onClick={() => window.location.reload()}>새 상대 연결하기</S.LogoffButton>
+										</S.LoadingText>
+									) : (
+										''
+									)}
+								</>
+							)}
 						</S.ChattingBox>
 						<S.ChattingSendBox onSubmit={(e) => e.preventDefault()}>
 							<S.ChattingSend
@@ -101,7 +164,7 @@ const Chat = () => {
 								onChange={(e) => setMessage(e.target.value)}
 								disabled={disable}
 								value={message}
-								placeholder={disable ? '상대방을 기다리고 있어요...' : ''}
+								placeholder={disable && !disconnect ? '상대방을 기다리고 있어요...' : ''}
 							/>
 							<S.ChattingSendButton onClick={onSubmitMessage} disabled={isEmpty} color={isEmpty ? '#ccc' : '#007aff'}>
 								전송

@@ -78,10 +78,30 @@ export const ChattingHeaderText = styled.span`
 	margin: 2px 0 0 12px;
 `
 
+export const ChattingHeaderSubWrap = styled.div`
+	display: flex;
+	margin-left: auto;
+	justify-content: center;
+	align-items: center;
+`
+
 export const ChattingHeaderUserCounts = styled.span`
 	font-size: 14px;
 	font-weight: 600;
-	margin: 2px 20px 0 auto;
+	margin-right: 12px;
+`
+
+export const ChattingHeaderExitButton = styled.button`
+	margin-right: 16px;
+	width: 70px;
+	background-color: ${(props) => props.color};
+	height: 24px;
+	font-size: 12px;
+	font-weight: 800;
+	color: white;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
 `
 
 export const ChattingProfileImage = styled.img`
@@ -150,4 +170,18 @@ export const LoadingText = styled.span`
 	font-size: 12px;
 	font-weight: 700;
 	color: rgba(0, 0, 0, 0.4);
+`
+
+export const LogoffButton = styled.button`
+	width: 80px;
+	background-color: #007aff;
+	height: 26px;
+	font-size: 8px;
+	font-weight: 800;
+	color: white;
+	border: 1px solid #f2f3f7;
+	border-radius: 4px;
+	cursor: pointer;
+	margin-top: 4px;
+	margin-left: 16px;
 `

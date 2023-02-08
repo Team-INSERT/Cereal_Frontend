@@ -49,12 +49,12 @@ export const HomeTitleImage = styled.img`
 
 export const HomeLoginButton = styled.button`
 	margin: 14px 0 0 100px;
-	width: 280px;
-	height: 42px;
+	width: 200px;
+	height: 36px;
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	font-size: 16px;
+	font-size: 14px;
 	font-weight: 600;
 	border: 2.2px solid #007aff;
 	border-radius: 4px;
