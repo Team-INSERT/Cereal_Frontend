@@ -4,7 +4,7 @@ import * as S from './style'
 import io from 'socket.io-client'
 import dateParser from 'utils/dateParser'
 
-const socket = io('http://localhost:8081', {
+const socket = io('http://cereal.team-insert.com/api', {
 	path: '/socket.io',
 })
 
